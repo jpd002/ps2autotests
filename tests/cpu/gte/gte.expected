@@ -1,0 +1,4 @@
+-- TEST BEGIN
+outColor1: aa, cc, aa
+outColor2: 55, 66, 55
+-- TEST END
