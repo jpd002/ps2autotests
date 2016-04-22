@@ -6,6 +6,7 @@
 namespace DMA {
 	void SendSimple(volatile DMA::Channel *chan, void *data, int size);
 	void SendChain(volatile DMA::Channel *chan, void *dmatag, int size);
+	void ReceiveSimple(volatile DMA::Channel *chan, void* data, int size);
 }
 
 #endif

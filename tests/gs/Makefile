@@ -1,4 +1,4 @@
-TARGETS = label signal
+TARGETS = label signal simpledraw
 EXTRA_OBJS = emit_giftag.o gsregs.o ../dma/dmatags.o ../dma/dmasend.o
 
 COMMON_DIR=../../common
