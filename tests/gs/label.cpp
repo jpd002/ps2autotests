@@ -5,7 +5,7 @@
 #include "gsregs.h"
 
 void testSetBits() {
-	*GS::SIGLBLID = 0x0000000076543210ULL;
+	*GS::R_SIGLBLID = 0x0000000076543210ULL;
 	
 	GIF::Tag tag;
 	tag.SetLoops(1);
@@ -18,11 +18,11 @@ void testSetBits() {
 	
 	DMA::SendSimple(DMA::D2, packet.Raw(), packet.Size());
 
-	printf("Set label bits -> SIGLBLID: %016lx\n", *GS::SIGLBLID);
+	printf("Set label bits -> SIGLBLID: %016lx\n", *GS::R_SIGLBLID);
 }
 
 void testClearBits() {
-	*GS::SIGLBLID = 0x3333333333333333ULL;
+	*GS::R_SIGLBLID = 0x3333333333333333ULL;
 	
 	GIF::Tag tag;
 	tag.SetLoops(1);
@@ -35,7 +35,7 @@ void testClearBits() {
 	
 	DMA::SendSimple(DMA::D2, packet.Raw(), packet.Size());
 
-	printf("Clear label bits -> SIGLBLID: %016lx\n", *GS::SIGLBLID);
+	printf("Clear label bits -> SIGLBLID: %016lx\n", *GS::R_SIGLBLID);
 }
 
 int main(int argc, char *argv[]) {

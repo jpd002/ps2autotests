@@ -6,8 +6,8 @@
 
 void testSetBits() {
 	//Signal must be cleared to unstall GIF
-	*GS::CSR = GS::CSR_SIGNAL;
-	*GS::SIGLBLID = 0x7654321000000000ULL;
+	*GS::R_CSR = GS::CSR_SIGNAL;
+	*GS::R_SIGLBLID = 0x7654321000000000ULL;
 	
 	GIF::Tag tag;
 	tag.SetLoops(1);
@@ -21,13 +21,13 @@ void testSetBits() {
 	DMA::SendSimple(DMA::D2, packet.Raw(), packet.Size());
 
 	printf("Set signal bits -> CSR[SIGNAL] = %016lx, SIGLBLID: %016lx\n", 
-		*GS::CSR & GS::CSR_SIGNAL, *GS::SIGLBLID);
+		*GS::R_CSR & GS::CSR_SIGNAL, *GS::R_SIGLBLID);
 }
 
 void testClearBits() {
 	//Signal must be cleared to unstall GIF
-	*GS::CSR = GS::CSR_SIGNAL;
-	*GS::SIGLBLID = 0x3333333333333333ULL;
+	*GS::R_CSR = GS::CSR_SIGNAL;
+	*GS::R_SIGLBLID = 0x3333333333333333ULL;
 	
 	GIF::Tag tag;
 	tag.SetLoops(1);
@@ -41,7 +41,7 @@ void testClearBits() {
 	DMA::SendSimple(DMA::D2, packet.Raw(), packet.Size());
 
 	printf("Clear signal bits -> CSR[SIGNAL] = %016lx, SIGLBLID: %016lx\n", 
-		*GS::CSR & GS::CSR_SIGNAL, *GS::SIGLBLID);
+		*GS::R_CSR & GS::CSR_SIGNAL, *GS::R_SIGLBLID);
 }
 
 int main(int argc, char *argv[]) {
