@@ -7,8 +7,8 @@ namespace GS {
 	}
 	
 	u64 RGBAQ(u8 r, u8 g, u8 b, u8 a, float q) {
-		//Q not good
-		return ((u64)r) | ((u64)g << 8) | ((u64)b << 16) | ((u64)a << 24) | (*(u64*)&q << 32);
+		u32 qint = *(u32*)&q;
+		return ((u64)r) | ((u64)g << 8) | ((u64)b << 16) | ((u64)a << 24) | ((u64)qint << 32);
 	}
 	
 	u64 XYZ2(u16 x, u16 y, u32 z) {
