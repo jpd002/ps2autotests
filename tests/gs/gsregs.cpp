@@ -11,6 +11,11 @@ namespace GS {
 		return ((u64)r) | ((u64)g << 8) | ((u64)b << 16) | ((u64)a << 24) | ((u64)qint << 32);
 	}
 	
+	u64 RGBAQ(u32 rgba, float q) {
+		u32 qint = *(u32*)&q;
+		return ((u64)rgba) | ((u64)qint << 32);
+	}
+	
 	u64 XYZ2(u16 x, u16 y, u32 z) {
 		return ((u64)x) | ((u64)y << 16) | ((u64)z << 32);
 	}
@@ -26,7 +31,15 @@ namespace GS {
 	u64 SCISSOR(u16 scax0, u16 scax1, u16 scay0, u16 scay1) {
 		return ((u64)scax0) | ((u64)scax1 << 16) | ((u64)scay0 << 32) | ((u64)scay1 << 48);
 	}
-
+	
+	u64 ALPHA(u8 a, u8 b, u8 c, u8 d, u8 fix) {
+		return ((u64)a) | ((u64)b << 2) | ((u64)c << 4) | ((u64)d << 6) | ((u64)fix << 32);
+	}
+	
+	u64 COLCLAMP(u8 clamp) {
+		return ((u64)clamp);
+	}
+	
 	u64 FRAME(u16 fbp, u8 fbw, u8 psm, u32 fbmsk) {
 		return ((u64)fbp) | ((u64)fbw << 16) | ((u64)psm << 24) | ((u64)fbmsk << 32);
 	}

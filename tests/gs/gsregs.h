@@ -19,6 +19,9 @@ namespace GS
 		REG_PRMODECONT = 0x1A,
 		REG_SCISSOR_1  = 0x40,
 		REG_SCISSOR_2  = 0x41,
+		REG_ALPHA_1    = 0x42,
+		REG_ALPHA_2    = 0x43,
+		REG_COLCLAMP   = 0x46,
 		REG_FRAME_1    = 0x4C,
 		REG_FRAME_2    = 0x4D,
 		REG_ZBUF_1     = 0x4E,
@@ -67,10 +70,13 @@ namespace GS
 	
 	u64 PRIM(u8 prim, u8 iip, u8 tme, u8 fge, u8 abe, u8 aa1, u8 fst, u8 ctxt, u8 fix);
 	u64 RGBAQ(u8 r, u8 g, u8 b, u8 a, float q);
+	u64 RGBAQ(u32 rgba, float q);
 	u64 XYZ2(u16 x, u16 y, u32 z);
 	u64 XYOFFSET(u16 ofsx, u16 ofsy);
 	u64 PRMODECONT(u8 ac);
 	u64 SCISSOR(u16 scax0, u16 scax1, u16 scay0, u16 scay1);
+	u64 ALPHA(u8 a, u8 b, u8 c, u8 d, u8 fix);
+	u64 COLCLAMP(u8 clamp);
 	u64 FRAME(u16 fbp, u8 fbw, u8 psm, u32 fbmsk);
 	u64 ZBUF(u16 zbp, u8 psm, u8 zmsk);
 	u64 BITBLTBUF(u16 sbp, u8 sbw, u8 spsm, u16 dbp, u8 dbw, u8 dpsm);
