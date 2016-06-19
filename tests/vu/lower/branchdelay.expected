@@ -1,0 +1,16 @@
+-- TEST BEGIN
+branch after multiple ops:
+  VI01: 0003
+  VI02: 0007
+branch without delay:
+  VI01: 0010
+  VI02: 0011
+  VI03: 0011
+branch with delay:
+  VI01: 0010
+  VI02: 0010
+  VI03: 0020
+branch with integer op in delay slot:
+  VI01: 00fb
+  VI02: 0100
+-- TEST END
