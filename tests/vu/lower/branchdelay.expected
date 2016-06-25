@@ -13,4 +13,7 @@ branch with delay:
 branch with integer op in delay slot:
   VI01: 00fb
   VI02: 0100
+branch with flag check op:
+  VI01: 0001
+  VI02: 0002
 -- TEST END

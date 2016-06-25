@@ -120,6 +120,40 @@ public:
 		printf("  VI01: "); PrintRegister(VI01, true);
 		printf("  VI02: "); PrintRegister(VI02, true);
 	}
+	
+	void Perform5() {
+		using namespace VU;
+		
+		printf("branch with flag check op:\n");
+		
+		Reset();
+		
+		Wr(ADD(DEST_XYZW, VF01, VF00, VF00), IADDIU(VI01, VI00, 0x02));
+		Wr(NOP(), IADDIU(VI02, VI00, 0x00));
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		
+		Wr(FMAND(VI02, VI01));
+		Label labelNotZero = IBNE(VI02, VI00);
+		Label labelZero = B();
+		
+		L(labelNotZero);
+		Wr(IADDIU(VI01, VI00, 0x01));
+		Label labelDone = B();
+		
+		L(labelZero);
+		Wr(IADDIU(VI01, VI00, 0x00));
+		
+		L(labelDone);
+		
+		Execute();
+		
+		printf("  VI01: "); PrintRegister(VI01, true);
+		printf("  VI02: "); PrintRegister(VI02, true);
+	}
 };
 
 int main(int argc, char *argv[]) {
@@ -130,6 +164,7 @@ int main(int argc, char *argv[]) {
 	runner.Perform2();
 	runner.Perform3();
 	runner.Perform4();
+	runner.Perform5();
 	
 	printf("-- TEST END\n");
 	return 0;
