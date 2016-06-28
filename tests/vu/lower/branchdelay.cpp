@@ -129,7 +129,7 @@ public:
 		Reset();
 		
 		Wr(ADD(DEST_XYZW, VF01, VF00, VF00), IADDIU(VI01, VI00, 0x02));
-		Wr(NOP(), IADDIU(VI02, VI00, 0x00));
+		Wr(IADDIU(VI02, VI00, 0x00));
 		Wr(NOP());
 		Wr(NOP());
 		Wr(NOP());
