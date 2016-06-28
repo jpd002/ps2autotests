@@ -16,4 +16,7 @@ branch with integer op in delay slot:
 branch with flag check op:
   VI01: 0001
   VI02: 0002
+branch with load op:
+  VI01: 0001
+  VI02: 0010
 -- TEST END

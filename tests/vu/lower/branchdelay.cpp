@@ -154,6 +154,42 @@ public:
 		printf("  VI01: "); PrintRegister(VI01, true);
 		printf("  VI02: "); PrintRegister(VI02, true);
 	}
+	
+	void Perform6() {
+		using namespace VU;
+		
+		printf("branch with load op:\n");
+		
+		Reset();
+		
+		Wr(IADDIU(VI02, VI00, 0x00));
+		Wr(IADDIU(VI10, VI00, 0x10));
+		Wr(ISW(DEST_X, VI10, VI00, 0x00));
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		
+		Wr(ILW(DEST_X, VI02, VI00, 0x00));
+		Label labelEqual = IBEQ(VI02, VI10);
+		Label labelNotEqual = B();
+		
+		L(labelEqual);
+		Wr(IADDIU(VI01, VI00, 0x01));
+		Label labelDone = B();
+		
+		L(labelNotEqual);
+		Wr(IADDIU(VI01, VI00, 0x00));
+		
+		L(labelDone);
+		
+		Execute();
+		
+		printf("  VI01: "); PrintRegister(VI01, true);
+		printf("  VI02: "); PrintRegister(VI02, true);
+	}
 };
 
 int main(int argc, char *argv[]) {
@@ -165,6 +201,7 @@ int main(int argc, char *argv[]) {
 	runner.Perform3();
 	runner.Perform4();
 	runner.Perform5();
+	runner.Perform6();
 	
 	printf("-- TEST END\n");
 	return 0;
