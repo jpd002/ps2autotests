@@ -13,10 +13,34 @@ branch with delay:
 branch with integer op in delay slot:
   VI01: 00fb
   VI02: 0100
-branch with flag check op:
-  VI01: 0001
-  VI02: 0002
-branch with load op:
-  VI01: 0001
-  VI02: 0010
+FMAND pipeline:
+  Instruction result: 0002
+  Branch used result: 0001
+IADDIU pipeline:
+  Instruction result: 00ff
+  Branch used result: 0000
+ILW pipeline:
+  Instruction result: 0010
+  Branch used result: 0001
+ILWR pipeline:
+  Instruction result: 00f0
+  Branch used result: 0001
+ISUBIU pipeline:
+  Instruction result: ff01
+  Branch used result: 0000
+LQI pipeline:
+  Instruction result: 0001
+  Branch used result: 0000
+LQD pipeline:
+  Instruction result: ffff
+  Branch used result: 0000
+MTIR pipeline:
+  Instruction result: 0023
+  Branch used result: 0000
+SQI pipeline:
+  Instruction result: 0001
+  Branch used result: 0000
+SQD pipeline:
+  Instruction result: ffff
+  Branch used result: 0000
 -- TEST END

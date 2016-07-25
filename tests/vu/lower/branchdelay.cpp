@@ -121,48 +121,70 @@ public:
 		printf("  VI02: "); PrintRegister(VI02, true);
 	}
 	
-	void Perform5() {
+	typedef void (BranchDelayTestRunner::*PrepareInstructionPipelineTestFunction)();
+	
+	void PerformInstructionPipelineTest(const char* name, const PrepareInstructionPipelineTestFunction& prepareTest) {
 		using namespace VU;
 		
-		printf("branch with flag check op:\n");
+		printf("%s pipeline:\n", name);
 		
 		Reset();
 		
-		Wr(ADD(DEST_XYZW, VF01, VF00, VF00), IADDIU(VI01, VI00, 0x02));
+		//Reset VI01
+		Wr(IADDIU(VI01, VI00, 0x00));
+		
+		//Add in some NOPs to prevent chaining two integer instructions together
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		
+		//Last instruction must modify VI01
+		((*this).*(prepareTest))();
+		
+		//Will check if VI01 is not equal to zero
+		//If branch is taken, it means branch used result of previous instruction
+		Label labelNotEqualZero = IBNE(VI01, VI00);
+		Label labelEqualZero = B();
+		
+		L(labelEqualZero);
 		Wr(IADDIU(VI02, VI00, 0x00));
-		Wr(NOP());
-		Wr(NOP());
-		Wr(NOP());
-		Wr(NOP());
-		Wr(NOP());
-		
-		Wr(FMAND(VI02, VI01));
-		Label labelNotZero = IBNE(VI02, VI00);
-		Label labelZero = B();
-		
-		L(labelNotZero);
-		Wr(IADDIU(VI01, VI00, 0x01));
 		Label labelDone = B();
 		
-		L(labelZero);
-		Wr(IADDIU(VI01, VI00, 0x00));
+		L(labelNotEqualZero);
+		Wr(IADDIU(VI02, VI00, 0x01));
 		
 		L(labelDone);
 		
 		Execute();
 		
-		printf("  VI01: "); PrintRegister(VI01, true);
-		printf("  VI02: "); PrintRegister(VI02, true);
+		printf("  Instruction result: "); PrintRegister(VI01, true);
+		printf("  Branch used result: "); PrintRegister(VI02, true);
 	}
 	
-	void Perform6() {
+	void PrepareFMANDTest() {
 		using namespace VU;
 		
-		printf("branch with load op:\n");
+		Wr(ADD(DEST_XYZW, VF01, VF00, VF00), IADDIU(VI02, VI00, 0x02));
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
 		
-		Reset();
+		Wr(FMAND(VI01, VI02));
+	}
+	
+	void PrepareIADDIUTest() {
+		using namespace VU;
+		Wr(IADDIU(VI01, VI00, 0xFF));
+	}
+	
+	void PrepareILWTest() {
+		using namespace VU;
 		
-		Wr(IADDIU(VI02, VI00, 0x00));
 		Wr(IADDIU(VI10, VI00, 0x10));
 		Wr(ISW(DEST_X, VI10, VI00, 0x00));
 		Wr(NOP());
@@ -172,23 +194,61 @@ public:
 		Wr(NOP());
 		Wr(NOP());
 		
-		Wr(ILW(DEST_X, VI02, VI00, 0x00));
-		Label labelEqual = IBEQ(VI02, VI10);
-		Label labelNotEqual = B();
+		Wr(ILW(DEST_X, VI01, VI00, 0x00));
+	}
+	
+	void PrepareILWRTest() {
+		using namespace VU;
 		
-		L(labelEqual);
-		Wr(IADDIU(VI01, VI00, 0x01));
-		Label labelDone = B();
+		Wr(IADDIU(VI10, VI00, 0xF0));
+		Wr(ISW(DEST_X, VI10, VI00, 0x00));
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
 		
-		L(labelNotEqual);
-		Wr(IADDIU(VI01, VI00, 0x00));
+		Wr(ILWR(DEST_X, VI01, VI00));
+	}
+	
+	void PrepareISUBIUTest() {
+		using namespace VU;
+		Wr(ISUBIU(VI01, VI00, 0xFF));
+	}
+	
+	void PrepareLQITest() {
+		using namespace VU;
+		Wr(LQI(DEST_XYZW, VF00, VI01));
+	}
+	
+	void PrepareLQDTest() {
+		using namespace VU;
+		Wr(LQD(DEST_XYZW, VF00, VI01));
+	}
+	
+	void PrepareMTIRTest() {
+		using namespace VU;
+		Wr(IADDIU(VI10, VI00, 0x23));
+		Wr(MFIR(DEST_X, VF01, VI10));
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
+		Wr(NOP());
 		
-		L(labelDone);
-		
-		Execute();
-		
-		printf("  VI01: "); PrintRegister(VI01, true);
-		printf("  VI02: "); PrintRegister(VI02, true);
+		Wr(MTIR(DEST_X, VI01, FIELD_X, VF01));
+	}
+	
+	void PrepareSQITest() {
+		using namespace VU;
+		Wr(SQI(DEST_XYZW, VF00, VI01));
+	}
+	
+	void PrepareSQDTest() {
+		using namespace VU;
+		Wr(SQD(DEST_XYZW, VF00, VI01));
 	}
 };
 
@@ -200,8 +260,28 @@ int main(int argc, char *argv[]) {
 	runner.Perform2();
 	runner.Perform3();
 	runner.Perform4();
-	runner.Perform5();
-	runner.Perform6();
+	
+	runner.PerformInstructionPipelineTest("FMAND",  &BranchDelayTestRunner::PrepareFMANDTest);
+	runner.PerformInstructionPipelineTest("IADDIU", &BranchDelayTestRunner::PrepareIADDIUTest);
+	runner.PerformInstructionPipelineTest("ILW",    &BranchDelayTestRunner::PrepareILWTest);
+	runner.PerformInstructionPipelineTest("ILWR",   &BranchDelayTestRunner::PrepareILWRTest);
+	runner.PerformInstructionPipelineTest("ISUBIU", &BranchDelayTestRunner::PrepareISUBIUTest);
+	runner.PerformInstructionPipelineTest("LQI",    &BranchDelayTestRunner::PrepareLQITest);
+	runner.PerformInstructionPipelineTest("LQD",    &BranchDelayTestRunner::PrepareLQDTest);
+	runner.PerformInstructionPipelineTest("MTIR",   &BranchDelayTestRunner::PrepareMTIRTest);
+	runner.PerformInstructionPipelineTest("SQI",    &BranchDelayTestRunner::PrepareSQITest);
+	runner.PerformInstructionPipelineTest("SQD",    &BranchDelayTestRunner::PrepareSQDTest);
+	
+	//Instructions that still need testing:
+	//BAL/JALR (probably hard to test and not very interesting)
+	//FCAND/FCEQ/FCGET/FCOR
+	//FMEQ/FMOR
+	//FSAND/FSEQ/FSOR
+	//IADDI
+	//IAND
+	//IOR
+	//ISUB
+	//XTOP/XITOP
 	
 	printf("-- TEST END\n");
 	return 0;
