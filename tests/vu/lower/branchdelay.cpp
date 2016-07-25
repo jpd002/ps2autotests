@@ -177,6 +177,11 @@ public:
 		Wr(FMAND(VI01, VI02));
 	}
 	
+	void PrepareIADDITest() {
+		using namespace VU;
+		Wr(IADDI(VI01, VI00, 0x5));
+	}
+	
 	void PrepareIADDIUTest() {
 		using namespace VU;
 		Wr(IADDIU(VI01, VI00, 0xFF));
@@ -262,6 +267,7 @@ int main(int argc, char *argv[]) {
 	runner.Perform4();
 	
 	runner.PerformInstructionPipelineTest("FMAND",  &BranchDelayTestRunner::PrepareFMANDTest);
+	runner.PerformInstructionPipelineTest("IADDI",  &BranchDelayTestRunner::PrepareIADDITest);
 	runner.PerformInstructionPipelineTest("IADDIU", &BranchDelayTestRunner::PrepareIADDIUTest);
 	runner.PerformInstructionPipelineTest("ILW",    &BranchDelayTestRunner::PrepareILWTest);
 	runner.PerformInstructionPipelineTest("ILWR",   &BranchDelayTestRunner::PrepareILWRTest);
@@ -277,7 +283,7 @@ int main(int argc, char *argv[]) {
 	//FCAND/FCEQ/FCGET/FCOR
 	//FMEQ/FMOR
 	//FSAND/FSEQ/FSOR
-	//IADDI
+	//IADD
 	//IAND
 	//IOR
 	//ISUB

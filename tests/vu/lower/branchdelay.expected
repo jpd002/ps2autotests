@@ -16,6 +16,9 @@ branch with integer op in delay slot:
 FMAND pipeline:
   Instruction result: 0002
   Branch used result: 0001
+IADDI pipeline:
+  Instruction result: 0005
+  Branch used result: 0000
 IADDIU pipeline:
   Instruction result: 00ff
   Branch used result: 0000
