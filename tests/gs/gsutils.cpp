@@ -47,9 +47,9 @@ u32 getColor(u32 frameAddress, u32 frameWidth, u32 framePsm) {
 	tag.SetEop();
 	tag.SetRegDescs(GIF::REG_AD);
 	
-	GIF::PackedPacket packet(64);
+	GIF::PackedPacket packet(5 * 0x10);
 	packet.WriteTag(tag);
-	packet.AD(GS::REG_BITBLTBUF, GS::BITBLTBUF(frameAddress / 64, frameWidth / 64, framePsm, 0, 0, 0));
+	packet.AD(GS::REG_BITBLTBUF, GS::BITBLTBUF(frameAddress / 256, frameWidth / 64, framePsm, 0, 0, 0));
 	packet.AD(GS::REG_TRXPOS,    GS::TRXPOS(0, 0, 0, 0, 0));
 	packet.AD(GS::REG_TRXREG,    GS::TRXREG(width, height));
 	packet.AD(GS::REG_TRXDIR,    GS::TRXDIR(GS::TRXDIR_XDIR_LOCAL_TO_HOST));

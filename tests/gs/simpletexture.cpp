@@ -68,7 +68,7 @@ void doTest() {
 	tag.SetEop();
 	tag.SetRegDescs(GIF::REG_AD);
 	
-	GIF::PackedPacket packet(12 * 0x10);
+	GIF::PackedPacket packet(13 * 0x10);
 	packet.WriteTag(tag);
 	
 	//Setup render environment
