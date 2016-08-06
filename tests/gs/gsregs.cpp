@@ -16,8 +16,17 @@ namespace GS {
 		return ((u64)rgba) | ((u64)qint << 32);
 	}
 	
+	u64 UV(u16 u, u16 v) {
+		return ((u64)u) | ((u64)v << 16);
+	}
+	
 	u64 XYZ2(u16 x, u16 y, u32 z) {
 		return ((u64)x) | ((u64)y << 16) | ((u64)z << 32);
+	}
+	
+	u64 TEX0(u16 tbp0, u8 tbw, u8 psm, u8 tw, u8 th, u8 tcc, u8 tfx, u16 cbp, u8 cpsm, u8 csm, u8 csa, u8 cld) {
+		return ((u64)tbp0) | ((u64)tbw << 14) | ((u64)psm << 20) | ((u64)tw << 26) | ((u64)th << 30) | ((u64)tcc << 34) |
+		       ((u64)tfx << 35) | ((u64)cbp << 37) | ((u64)cpsm << 51) | ((u64)csm << 55) | ((u64)csa << 56) | ((u64)cld << 61);
 	}
 	
 	u64 XYOFFSET(u16 ofsx, u16 ofsy) {

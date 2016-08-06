@@ -13,7 +13,10 @@ namespace GS
 	enum REGS {
 		REG_PRIM       = 0x00,
 		REG_RGBAQ      = 0x01,
+		REG_UV         = 0x03,
 		REG_XYZ2       = 0x05,
+		REG_TEX0_1     = 0x06,
+		REG_TEX0_2     = 0x07,
 		REG_XYOFFSET_1 = 0x18,
 		REG_XYOFFSET_2 = 0x19,
 		REG_PRMODECONT = 0x1A,
@@ -71,7 +74,9 @@ namespace GS
 	u64 PRIM(u8 prim, u8 iip, u8 tme, u8 fge, u8 abe, u8 aa1, u8 fst, u8 ctxt, u8 fix);
 	u64 RGBAQ(u8 r, u8 g, u8 b, u8 a, float q);
 	u64 RGBAQ(u32 rgba, float q);
+	u64 UV(u16 u, u16 v);
 	u64 XYZ2(u16 x, u16 y, u32 z);
+	u64 TEX0(u16 tbp0, u8 tbw, u8 psm, u8 tw, u8 th, u8 tcc, u8 tfx, u16 cbp, u8 cpsm, u8 csm, u8 csa, u8 cld);
 	u64 XYOFFSET(u16 ofsx, u16 ofsy);
 	u64 PRMODECONT(u8 ac);
 	u64 SCISSOR(u16 scax0, u16 scax1, u16 scay0, u16 scay1);
