@@ -1,0 +1,6 @@
+-- TEST BEGIN
+branch -> taken: 2, 2
+branch -> not taken: 2, 2
+branch likely -> taken: 2, 2
+branch likely -> not taken: 1, 2
+-- TEST END
