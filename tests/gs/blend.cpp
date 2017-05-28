@@ -70,7 +70,7 @@ void doTest(u32 blendColor1, u32 blendColor2, u32 blendAlpha, u32 blendColor3) {
 		render(color1, color2, blendColor1, blendColor2, blendAlpha, blendColor3, fix);
 		u32 result = getColor(FRAME_ADDRESS, FRAME_WIDTH, FRAME_PSM);
 		printf("  src: %08x, dst: %08x, fix: %02x => %08x\n", 
-			color2, color1, fix, result & 0x00FFFFFF);
+			color2, color1, fix, result);
 	}
 }
 
